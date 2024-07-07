@@ -27,8 +27,8 @@ To run this project, you need to have the following installed on your local mach
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/your-username/sensor-data-monitor.git
-    cd sensor-data-monitor
+    git clone https://github.com/Abdullah2020/Live-Weather-Report-for-Damaturu-Yobe-State.git
+    cd Damaturu_project
     ```
 
 2. **Install the required Python packages:**
