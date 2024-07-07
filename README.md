@@ -58,7 +58,6 @@ To run this project, you need to have the following installed on your local mach
 - **app.py**: The main Flask application file that sets up the server and routes.
 - **config.py**: Configuration file containing the API keys.
 - **templates/index.html**: The HTML file that serves as the front end of the application.
-- **screenshot.png**: Screenshot of the web page.
 
 ### Usage
 
