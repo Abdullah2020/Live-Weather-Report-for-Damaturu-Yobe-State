@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+            margin: 0;
+            flex-direction: column;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            font-size: 1.2em;
+        }
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+        }
+        #weather-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 80%;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        async function fetchWeatherData() {
+            try {
+                let response = await fetch('/data');
+                let data = await response.json();
+                let weatherContainer = document.getElementById('weather-data');
+                
+                if (data.error) {
+                    weatherContainer.innerHTML = `<p>${data.error}</p>`;
+                } else {
+                    let coordBox = document.createElement('div');
+                    coordBox.className = 'container';
+                    coordBox.innerHTML = `
+                        <h2>Coordinates</h2>
+                        <p><strong>Longitude:</strong> ${data.coord.lon}</p>
+                        <p><strong>Latitude:</strong> ${data.coord.lat}</p>
+                        <div id="map"></div>
+                    `;
+                    weatherContainer.appendChild(coordBox);
+
+                    let weatherBox = document.createElement('div');
+                    weatherBox.className = 'container';
+                    weatherBox.innerHTML = `
+                        <h2>Weather</h2>
+                        <p><strong>Main:</strong> ${data.weather[0].main}</p>
+                        <p><strong>Description:</strong> ${data.weather[0].description}</p>
+                        <img class="weather-icon" src="http://openweathermap.org/img/wn/${data.weather[0].icon}.png" alt="weather icon">
+                    `;
+                    weatherContainer.appendChild(weatherBox);
+
+                    let mainBox = document.createElement('div');
+                    mainBox.className = 'container';
+                    mainBox.innerHTML = `
+                        <h2>Main</h2>
+                        <p><strong>Temperature:</strong> ${data.main.temp}°C</p>
+                        <p><strong>Feels Like:</strong> ${data.main.feels_like}°C</p>
+                        <p><strong>Min Temperature:</strong> ${data.main.temp_min}°C</p>
+                        <p><strong>Max Temperature:</strong> ${data.main.temp_max}°C</p>
+                        <p><strong>Pressure:</strong> ${data.main.pressure} hPa</p>
+                        <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+                    `;
+                    weatherContainer.appendChild(mainBox);
+
+                    let windBox = document.createElement('div');
+                    windBox.className = 'container';
+                    windBox.innerHTML = `
+                        <h2>Wind</h2>
+                        <p><strong>Speed:</strong> ${data.wind.speed} m/s</p>
+                        <p><strong>Direction:</strong> ${data.wind.deg}°</p>
+                    `;
+                    weatherContainer.appendChild(windBox);
+
+                    let sysBox = document.createElement('div');
+                    sysBox.className = 'container';
+                    sysBox.innerHTML = `
+                        <h2>System</h2>
+                        <p><strong>Country:</strong> ${data.sys.country}</p>
+                        <p><strong>Sunrise:</strong> ${new Date(data.sys.sunrise * 1000).toLocaleTimeString()}</p>
+                        <p><strong>Sunset:</strong> ${new Date(data.sys.sunset * 1000).toLocaleTimeString()}</p>
+                    `;
+                    weatherContainer.appendChild(sysBox);
+
+                    initMap(data.coord.lat, data.coord.lon);
+                }
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+            }
+        }
+
+        function initMap(lat, lon) {
+            let mapOptions = {
+                center: new google.maps.LatLng(lat, lon),
+                zoom: 10
+            };
+            let map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lon),
+                map: map
+            });
+        }
+
+        window.onload = fetchWeatherData;
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
+    </script>
+</head>
+<body>
+    <img id="logo" src="{{ url_for('static', filename='damaturu_logo.png') }}" alt="Damaturu Logo">
+    <h1>Live Weather Report for Damaturu, Yobe State, Nigeria.</h1>
+    <div id="weather-data">
+        <!-- Weather data will be appended here -->
+    </div>
+</body>
+</html>
