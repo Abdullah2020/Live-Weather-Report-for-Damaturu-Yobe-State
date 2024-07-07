@@ -1,2 +1,2 @@
-API_KEY = 'AIzaSyBeShmuymFbyokr0-1WP9yKF-n7aGRUyjc'
-OPENWEATHERMAP_API_KEY = 'f5c390a1b90cbe02350bc07a26ce48e7'
+API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY'  # Replace with your actual Google Maps API key
+OPENWEATHERMAP_API_KEY = 'YOUR_OPENWEATHERMAP_API_KEY'  # Replace with your OpenWeatherMap API key
