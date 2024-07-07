@@ -1,7 +1,5 @@
 # Live Weather Report for Damaturu, Yobe State, Nigeria.
 
-![Weather Report Screenshot](Screenshot_webpage.png)
-
 ## Project Description
 
 This project is a live weather report monitoring web application for Damaturu, Yobe State. The application fetches real-time weather data from the OpenWeatherMap API and displays it on a web page using Flask, a lightweight WSGI web application framework in Python. The displayed weather data includes temperature, humidity, wind speed, and other essential weather information along with a map showing the location.
